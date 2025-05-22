@@ -1,75 +1,49 @@
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0d1b2a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
 .weather-widget {
-  width: 310px;
+  max-width: 310px;
   height: 290px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 10px 12px;
-  color: #f1f1f1;
+  margin: 50px auto;
+  border-radius: 16px;
+  padding: 15px;
+  color: #fff;
   text-align: center;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   box-sizing: border-box;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.weather-widget h1 {
-  font-size: 30px;
-  margin: 0;
-  line-height: 1;
-}
-
-.weather-widget h3 {
-  font-size: 16px;
-  margin: 0;
 }
 
 .weather-widget .icon {
-  width: 50px;
-  margin: 4px auto;
-}
-
-.weather-widget p {
-  margin: 0;
-  font-size: 10px;
-  line-height: 1.2;
+  width: 60px;
+  margin: 0 auto;
 }
 
 .forecast {
   display: flex;
   justify-content: space-between;
-  gap: 2px;
-  margin-top: 4px;
+  gap: 5px;
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 
 .day-forecast {
-  flex: 1 1 20%;
-  padding: 2px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 9px;
-  text-align: center;
+  flex: 1 1 30%;
+  padding: 5px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  font-size: 12px;
 }
 
 .day-forecast img {
-  width: 24px;
+  width: 32px;
 }
 
-.sun-time {
-  font-size: 10px;
-  color: #ccc;
-  margin-top: 2px;
+@media (max-width: 400px) {
+  .weather-widget {
+    width: 100%;
+    margin: 20px auto;
+    height: auto;
+  }
+
+  .day-forecast {
+    flex: 1 1 45%;
+    margin-bottom: 5px;
+  }
 }

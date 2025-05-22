@@ -8,10 +8,24 @@ function setBackground(condition, sunrise, sunset) {
   const now = Date.now() / 1000;
   const isDay = now > sunrise && now < sunset;
 
-  if (isDay) {
-    body.style.backgroundColor = "#e0f7fa";  // Bleu clair jour
+  if (condition.includes("rain")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/2JxGQX2.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/DwY5Zwb.gif') center/cover no-repeat";
+  } else if (condition.includes("cloud")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/FlJ4pTf.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/t0Q4zvP.gif') center/cover no-repeat";
+  } else if (condition.includes("clear")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/JSv6XjR.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/CANzWzr.gif') center/cover no-repeat";
+  } else if (condition.includes("snow")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/rW2kUUF.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/tbKoWb9.gif') center/cover no-repeat";
   } else {
-    body.style.backgroundColor = "#0d1b2a";  // Bleu foncé nuit
+    body.style.backgroundColor = "#1f1f1f";
   }
 }
 
@@ -60,7 +74,7 @@ function useGeolocationOrFallback() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
-      () => loadWeather(43.6045, 1.4442)
+      () => loadWeather(43.6045, 1.4442) // Toulouse
     );
   } else {
     loadWeather(43.6045, 1.4442);

@@ -3,41 +3,58 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Widget Météo Compact</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Widget Météo Bootstrap</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .weather-widget {
+      width: 350px;
+      margin: 50px auto;
+      border-radius: 16px;
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+    }
+    .weather-widget .icon {
+      width: 80px;
+      margin: 0 auto;
+    }
+    .forecast {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .day-forecast {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+    }
+    .day-forecast img {
+      width: 40px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="weather-widget">
-  <div class="header">
-    <div class="location-time">
-      <div id="city">Chargement...</div>
-      <div id="date">--</div>
-    </div>
-    <img id="icon" class="icon" src="" width="50">
-  </div>
-
-  <div class="current">
-    <div class="current-left">
-      <div id="time">--:--</div>
-      <div class="details">
-        <div id="feels">Ressenti: --°</div>
-        <div id="wind">Vent: --</div>
-        <div id="sun">--</div>
-      </div>
-    </div>
-    <div>
-      <div id="temp">--°C</div>
-      <div id="desc">...</div>
-    </div>
-  </div>
-
-  <div class="forecast" id="forecast"></div>
+<div class="weather-widget shadow-lg" id="widget">
+  <h3 id="city">Chargement...</h3>
+  <img id="icon" class="icon" src="">
+  <h1 id="temp">--°C</h1>
+  <p id="desc">...</p>
+  <p id="feels">Ressenti: --°</p>
+  <p id="wind">Vent: --</p>
+  <p id="sun">Lever: -- | Coucher: --</p>
+  <div class="forecast mt-3" id="forecast"></div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
