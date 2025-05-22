@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Widget Météo Dynamique avec Fallback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="weather-container" id="widget">
+  <div class="location-date" id="location">Chargement...</div>
+  <div class="time" id="time"></div>
+
+  <div class="current-weather">
+    <img id="icon" src="">
+    <div class="current-weather-info">
+      <div id="temp">--°C</div>
+      <div id="desc">...</div>
+      <div id="feels">Ressenti: --°</div>
+      <div id="wind">Vent: --</div>
+    </div>
+  </div>
+
+  <div class="sun-time" id="sun">Lever: -- | Coucher: --</div>
+  <div class="forecast" id="forecast"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
