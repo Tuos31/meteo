@@ -2,8 +2,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-size: cover;
-  background-position: center;
+  background-color: #1f1f1f;
   transition: background 0.8s ease;
 }
 

@@ -1,5 +1,5 @@
 
-const API_KEY = "cd8bfe4766c880e4b0410fed86ad31c0"; // ← remplace ici
+const API_KEY = "TA_CLE_OPENWEATHERMAP"; // ← remplace ici
 
 const widget = document.getElementById("widget");
 
@@ -15,25 +15,17 @@ function setTheme(condition) {
   body.className = "";
   switch (condition.toLowerCase()) {
     case "clear":
-      body.style.backgroundImage = "url('https://i.imgur.com/JR1rM9r.jpg')";
+    case "snow":
       widget.classList.add("light");
       break;
     case "rain":
     case "drizzle":
-      body.style.backgroundImage = "url('https://i.imgur.com/cckfZlV.jpg')";
-      widget.classList.remove("light");
-      break;
-    case "snow":
-      body.style.backgroundImage = "url('https://i.imgur.com/jV2mvra.jpg')";
-      widget.classList.add("light");
-      break;
     case "clouds":
-      body.style.backgroundImage = "url('https://i.imgur.com/hqlJLST.jpg')";
       widget.classList.remove("light");
       break;
     default:
-      body.style.backgroundColor = "#2c3e50";
       widget.classList.remove("light");
+      body.style.backgroundColor = "#1f1f1f";
   }
 }
 
