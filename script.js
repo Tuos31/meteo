@@ -1,5 +1,5 @@
 
-const API_KEY = "TA_CLE_OPENWEATHERMAP"; // ← remplace ici
+const API_KEY = "cd8bfe4766c880e4b0410fed86ad31c0"; // ← remplace ici
 
 const widget = document.getElementById("widget");
 
