@@ -1,73 +1,86 @@
 
-const API_KEY = "cd8bfe4766c880e4b0410fed86ad31c0"; // ← remplace ici
+const API_KEY = "cd8bfe4766c880e4b0410fed86ad31c0";
 
-const widget = document.getElementById("widget");
-
-function updateTime() {
-  const now = new Date();
-  document.getElementById("time").textContent = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-}
-setInterval(updateTime, 1000);
-updateTime();
-
-function setTheme(condition) {
+function setBackground(condition, sunrise, sunset) {
   const body = document.body;
   body.className = "";
-  switch (condition.toLowerCase()) {
-    case "clear":
-    case "snow":
-      widget.classList.add("light");
-      break;
-    case "rain":
-    case "drizzle":
-    case "clouds":
-      widget.classList.remove("light");
-      break;
-    default:
-      widget.classList.remove("light");
-      body.style.backgroundColor = "#1f1f1f";
+
+  const now = Date.now() / 1000;
+  const isDay = now > sunrise && now < sunset;
+
+  if (condition.includes("rain")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/2JxGQX2.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/DwY5Zwb.gif') center/cover no-repeat";
+  } else if (condition.includes("cloud")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/FlJ4pTf.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/t0Q4zvP.gif') center/cover no-repeat";
+  } else if (condition.includes("clear")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/JSv6XjR.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/CANzWzr.gif') center/cover no-repeat";
+  } else if (condition.includes("snow")) {
+    body.style.background = isDay
+      ? "url('https://i.imgur.com/rW2kUUF.gif') center/cover no-repeat"
+      : "url('https://i.imgur.com/tbKoWb9.gif') center/cover no-repeat";
+  } else {
+    body.style.backgroundColor = "#1f1f1f";
   }
 }
 
 function loadWeather(lat, lon) {
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=fr`;
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      const city = data.city.name;
-      const today = data.list[0];
-      const weatherMain = today.weather[0].main;
-      setTheme(weatherMain);
+  $.getJSON(url, function(data) {
+    const city = data.city.name;
+    const today = data.list[0];
+    const iconCode = today.weather[0].icon;
+    const description = today.weather[0].description;
+    const temp = Math.round(today.main.temp);
+    const feels = Math.round(today.main.feels_like);
+    const wind = today.wind.speed;
+    const sunrise = data.city.sunrise;
+    const sunset = data.city.sunset;
 
-      document.getElementById("location").textContent = city + " - " + new Date().toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-      document.getElementById("icon").src = `https://openweathermap.org/img/wn/${today.weather[0].icon}@2x.png`;
-      document.getElementById("temp").textContent = Math.round(today.main.temp) + "°C";
-      document.getElementById("desc").textContent = today.weather[0].description;
-      document.getElementById("feels").textContent = "Ressenti: " + Math.round(today.main.feels_like) + "°";
-      document.getElementById("wind").textContent = "Vent: " + today.wind.speed + " m/s";
-      document.getElementById("sun").textContent = "Lever: " + new Date(data.city.sunrise * 1000).toLocaleTimeString() + " | Coucher: " + new Date(data.city.sunset * 1000).toLocaleTimeString();
+    setBackground(today.weather[0].main.toLowerCase(), sunrise, sunset);
 
-      const forecastContainer = document.getElementById("forecast");
-      forecastContainer.innerHTML = "";
+    $("#city").text(city);
+    $("#icon").attr("src", `https://openweathermap.org/img/wn/${iconCode}@2x.png`);
+    $("#temp").text(temp + "°C");
+    $("#desc").text(description);
+    $("#feels").text("Ressenti: " + feels + "°");
+    $("#wind").text("Vent: " + wind + " m/s");
+    $("#sun").text("Lever: " + new Date(sunrise * 1000).toLocaleTimeString() + " | Coucher: " + new Date(sunset * 1000).toLocaleTimeString());
 
-      for (let i = 8; i <= 8 * 5; i += 8) {
-        const entry = data.list[i];
-        const dayName = new Date(entry.dt * 1000).toLocaleDateString("fr-FR", { weekday: 'short' });
-        forecastContainer.innerHTML += `
-          <div class="day-forecast">
-            <div>${dayName.toUpperCase()}</div>
-            <img src="https://openweathermap.org/img/wn/${entry.weather[0].icon}.png">
-            <div>${Math.round(entry.main.temp_max)}°/${Math.round(entry.main.temp_min)}°</div>
-          </div>`;
-      }
-    });
+    $("#forecast").empty();
+    for (let i = 8; i <= 8 * 4; i += 8) {
+      const entry = data.list[i];
+      const day = new Date(entry.dt * 1000).toLocaleDateString("fr-FR", { weekday: 'short' });
+      const icon = entry.weather[0].icon;
+      const max = Math.round(entry.main.temp_max);
+      const min = Math.round(entry.main.temp_min);
+      $("#forecast").append(`
+        <div class="day-forecast">
+          <strong>${day}</strong><br>
+          <img src="https://openweathermap.org/img/wn/${icon}.png"><br>
+          ${max}° / ${min}°
+        </div>
+      `);
+    }
+  });
 }
 
 function useGeolocationOrFallback() {
-  navigator.geolocation.getCurrentPosition(
-    pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
-    () => loadWeather(43.6045, 1.4442) // Toulouse
-  );
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
+      () => loadWeather(43.6045, 1.4442) // Toulouse
+    );
+  } else {
+    loadWeather(43.6045, 1.4442);
+  }
 }
 
-useGeolocationOrFallback();
+$(document).ready(function() {
+  useGeolocationOrFallback();
+});
